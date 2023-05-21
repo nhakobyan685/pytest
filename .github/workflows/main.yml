@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8  # Specify the Python version required by your code
+
       - name: Run PyTest
         run: pytest -rp calculator_pytest.py > test${{github.run_number}}.txt
 
@@ -31,7 +32,8 @@ jobs:
             git config --local user.name "nhakobyan685"
             git add test${{github.run_number}}.txt
             git commit -m "Tests ${{github.run_number}}"
+      - name : Push
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         branch: ${{ github.ref }}
