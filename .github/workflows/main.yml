@@ -18,15 +18,20 @@ jobs:
         with:
           python-version: 3.8  # Specify the Python version required by your code
       - name: Run PyTest
-        run: python calculator_pytest.py
+        run: pytest -rp calculator_pytest.py > test${{github.run_number}}.txt
 
-      - name: Store Result
-        run: |
-          random_filename=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)
-          mv test_result.txt $random_filename.txt
+#       - name: Store Result
+#         run: |
+#           random_filename=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)
+#           mv test_result.txt $random_filename.txt
+
       - name: Commit and push
         run: |
             git config --local user.email "nhakobyan685@gmail"
             git config --local user.name "nhakobyan685"
-            git add Pytests${{github.run_number}}.txt
+            git add test${{github.run_number}}.txt
             git commit -m "Tests ${{github.run_number}}"
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
