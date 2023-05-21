@@ -1,0 +1,32 @@
+name: Calculator PyTest
+permissions: write-all
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run PyTest
+    runs-on: ubuntu-latest  # Use the appropriate runner for your needs
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8  # Specify the Python version required by your code
+      - name: Run PyTest
+        run: python calculator_pytest.py
+
+      - name: Store Result
+        run: |
+          random_filename=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)
+          mv test_result.txt $random_filename.txt
+      - name: Commit and push
+        run: |
+            git config --local user.email "nhakobyan685@gmail"
+            git config --local user.name "nhakobyan685"
+            git add Pytests${{github.run_number}}.txt Unittest_results.txt
+            git commit -m "Tests ${{github.run_number}}"
