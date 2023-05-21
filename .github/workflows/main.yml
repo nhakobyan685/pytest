@@ -15,9 +15,6 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v2
-        with:
-          python-version: 3.8  # Specify the Python version required by your code
-
       - name: Run PyTest
         run: pytest -rp calculator_pytest.py > test${{github.run_number}}.txt
 
